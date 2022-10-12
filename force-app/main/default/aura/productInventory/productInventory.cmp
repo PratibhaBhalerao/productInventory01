@@ -1,3 +1,6 @@
+<!-- Name : Pratibha Bhalerao -->
+
+
 <aura:component implements="flexipage:availableForAllPageTypes,force:hasRecordId" controller="ProductList" access="global" >
     
 <!--   ..............................On Component Load.............................. -->
@@ -41,9 +44,9 @@
 
 <!--   ..................................Display Record In Table............................. -->        
         
-        <table class="slds-table slds-table–bordered slds-table–cell-buffer">
+        <table class="slds-table ">
             <thead>
-                <tr class="slds-text-title–caps">
+                <tr class="">
                     <th scope="col">
                         <div class="slds-truncate" title="First Name">Product Name</div>
                     </th>
@@ -104,7 +107,7 @@
                     </button>
                     <h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">New Product</h2>
                 </header>                
-                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                <div class="slds-modal__content slds-var-m-around_medium" id="modal-content-id-1">
                     <p>
 						<lightning:input type="String" name="name" label="Product Name" required="true" value="{!v.product.Name}" />
                         <lightning:input type="String" name="price" label="Price" required="true" value="{!v.product.Price__c}" />

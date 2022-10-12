@@ -1,0 +1,137 @@
+<aura:component implements="flexipage:availableForAllPageTypes,force:hasRecordId" controller="ProductList" access="global" >
+    
+<!--   ..............................On Component Load.............................. -->
+    
+    <aura:handler name="init" value="{!this}" action="{!c.getProductList}" />
+    
+    <aura:attribute name="product" type="Product2" default="{
+                                                            'sObject' : 'Product2',
+                                                            'Name' : '',
+                                                            'Product_Type__c' :'',
+                                                            'Category__c' : '',
+                                                            'Price__c' : 0,
+                                                            'Quantity__c' :0,
+                                                            'User__c' : ''
+                                                            }" />
+ 
+    <aura:attribute name="proid" type="String" />
+    
+    <aura:attribute name="productList" type="List" />
+    <aura:attribute name="searchKeyword" type="String" />
+    <aura:attribute name="isSave" type="boolean" default="false"/>
+    <aura:attribute name="isEdit" type="boolean" default="false"/>
+    
+<!--   ....................................Search Record................................. -->
+    
+    <lightning:card title="Product List">
+        <lightning:layout>
+            <lightning:layoutItem size="4" padding="around-small">
+                <lightning:input aura:id="searchField"
+                                 label="Product Name"
+                                 value="{!v.searchKeyword}"
+                                 placeholder="Search Product"
+                                 onchange="{!c.searchProducts}" />
+            </lightning:layoutItem>
+        </lightning:layout>
+        
+        
+        <aura:set attribute="actions">
+            <lightning:button label="New" onclick="{!c.openModel}" />
+        </aura:set>
+
+<!--   ..................................Display Record In Table............................. -->        
+        
+        <table class="slds-table slds-table–bordered slds-table–cell-buffer">
+            <thead>
+                <tr class="slds-text-title–caps">
+                    <th scope="col">
+                        <div class="slds-truncate" title="First Name">Product Name</div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-truncate" title="Price">Price</div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-truncate" title="Quantity">Quantity</div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-truncate" title="Quantity">Product Type</div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-truncate" title="Quantity">Category</div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-truncate" title="Action">Action</div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <aura:iteration items="{!v.productList}" var="p">
+                    <tr>
+                        <th scope="row" data-label="Product Name">
+                            <div class="slds-truncate" title="{! p.Name }">{! p.Name }</div>
+                        </th>
+                        <td data-label="Price">
+                            <div class="slds-truncate" title="{! p.Price__c }">{! p.Price__c }</div>
+                        </td>
+                        <td data-label="Quantity">
+                            <div class="slds-truncate" title="{! p.Quantity__c}">{! p.Quantity__c }</div>
+                        </td>
+                        <td data-label="Quantity">
+                            <div class="slds-truncate" title="{! p.Product_Type__c}">{! p.Product_Type__c }</div>
+                        </td>
+                        <td data-label="Quantity">
+                            <div class="slds-truncate" title="{! p.Category}">{! p.Category__c }</div>
+                        </td>
+                        <td data-label="Action">
+                            <a href="javascript:void(0)" onclick="{!c.editForm}" id="{!p.Id}">Edit</a> | 
+                            <a href="javascript:void(0)" onclick="{!c.delete}" id="{!p.Id}">Delete</a>
+                        </td>   
+                    </tr>
+                </aura:iteration>
+            </tbody>
+        </table>
+    </lightning:card>
+    
+<!--   .......................................Save Record................................. -->
+    
+    <aura:if isTrue="{!v.isSave}">
+        
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_small" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close">
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">New Product</h2>
+                </header>                
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <p>
+						<lightning:input type="String" name="name" label="Product Name" required="true" value="{!v.product.Name}" />
+                        <lightning:input type="String" name="price" label="Price" required="true" value="{!v.product.Price__c}" />
+                        <lightning:input type="String" name="quantity" label="Quantity" required="true" value="{!v.product.Quantity__c}" />
+                        <lightning:select name="category" label="Category" required="true" value="{!v.product.Category__c}">
+                            <option value="">Select</option>
+                            <option value="Wired">Wired</option>
+                            <option value="Wireless">Wireless</option>
+                        </lightning:select>
+                        <lightning:select name="producttype" label="Product Type" required="true" value="{!v.product.Product_Type__c}">
+                            <option value="">Select</option>
+                            <option value="Mobile">Mobile</option>
+                            <option value="Laptop">Laptop</option>
+                            <option value="CPU">CPU</option>
+                            <option value="Keyboard">Keyboard</option>
+                            <option value="Headphones">Headphones</option>
+                            <option value="Mouse">Mouse</option>
+                        </lightning:select>
+                        <lightning:input aura:id="quoteField" name="user" label="User" value="{!v.product.User__c}" required="true" class="slds-hidden"/>
+                    </p>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning:button variant="brand" label="Save" title="Addition action" onclick="{! c.add }"/>
+                    <lightning:button variant="Neutral" label="Cancel" title="Cancel action" onclick="{! c.doCancel }"/>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if>
+</aura:component>

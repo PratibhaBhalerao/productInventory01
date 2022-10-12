@@ -1,0 +1,58 @@
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId" access="global" controller="ProductList">
+    
+    <aura:handler name="init" value="{!this}" action="{!c.getProduct}" />
+	<aura:attribute name="productList" type="List" />
+       <aura:attribute name="searchKeyword" type="String" />
+        <lightning:layout>
+            <lightning:layoutItem size="4" padding="around-small">
+                <lightning:input aura:id="searchField"
+                                 label="Product Name"
+                                 value="{!v.searchKeyword}"
+                                 placeholder="Search Product"
+                                 onchange="{!c.searchProducts}" />
+            </lightning:layoutItem>
+        </lightning:layout>
+    
+    
+    
+    <div class="slds-p-around_small">WIRED PRODUCT
+        <div class="slds-grid slds-wrap">
+            
+            <aura:iteration items="{!v.productList}" var="pro">
+                <aura:if isTrue="{!pro.Category__c == 'Wired'}">  
+                <div class="slds-col slds-size_1-of-4 slds-p-around_small">
+                    <lightning:card >
+                        <p class ="slds-p-horizontal_small">
+                            <lightning:recordViewForm recordId="{!pro.Id}" objectApiName="Product2">
+                                <lightning:outputField fieldName="Name" />
+                                <lightning:outputField fieldName="Price__c" />
+                                <lightning:outputField fieldName="Quantity__c" />
+                                <lightning:outputField fieldName="Product_Type__c" />
+                                <!-- <lightning:outputField fieldName="Category__c" />  -->
+                            </lightning:recordViewForm></p>
+                    </lightning:card>  
+                </div>
+                </aura:if>
+            </aura:iteration>
+            </div></div>
+    	<div class="slds-p-around_small">WIRELESS PRODUCT
+        <div class="slds-grid slds-wrap">
+            
+            <aura:iteration items="{!v.productList}" var="pro">
+                <aura:if isTrue="{!pro.Category__c == 'Wireless'}">  
+                <div class="slds-col slds-size_1-of-4 slds-p-around_small">
+                    <lightning:card >
+                        <p class ="slds-p-horizontal_small">
+                            <lightning:recordViewForm recordId="{!pro.Id}" objectApiName="Product2">
+                                <lightning:outputField fieldName="Name" />
+                                <lightning:outputField fieldName="Price__c" />
+                                <lightning:outputField fieldName="Quantity__c" />
+                                <lightning:outputField fieldName="Product_Type__c" />
+                               <!-- <lightning:outputField fieldName="Category__c" /> -->
+                            </lightning:recordViewForm></p>
+                    </lightning:card>  
+                </div>
+                </aura:if>
+            </aura:iteration>
+        </div></div>
+</aura:component>

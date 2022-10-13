@@ -138,4 +138,6 @@
         </section>
         <div class="slds-backdrop slds-backdrop_open"></div>
     </aura:if>
+    
+    <div>Latest Change in MH 3</div>
 </aura:component>
